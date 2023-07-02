@@ -36,6 +36,7 @@ public class MbtiController {
         if (mbtiVo.isPresent()) {
             return new ResponseEntity(mbtiVo.get(), HttpStatus.OK);
         } else {
+
             return new ResponseEntity("No Such Value : "+ mbti,HttpStatus.OK);
         }
 

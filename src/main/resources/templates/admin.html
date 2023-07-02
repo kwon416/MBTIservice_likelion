@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudtype - Spring Boot</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.3/dist/full.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2/dist/tailwind.min.css" rel="stylesheet" type="text/css" />
+    <link rel="icon" href="img/favicon.ico">
+    <style>
+        .selected {
+            background-color: #4CAF50;
+        }
+        .section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .button {
+            border: 2px solid #4CAF50;
+            color: white;
+            padding: 15px 32px;
+            margin-bottom: 2px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 12px;
+        }
+        table {
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #444444;
+        }
+    </style>
+</head>
+<body>
+<div style="text-align: center"><h1>ADMIN PAGE</h1></div>
+<div class="hero min-h-screen bg-base-200">
+    <div class="hero-content flex-col lg:flex-row-reverse">
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>MBTI</th>
+                <th>INFO</th>
+            </tr>
+            <tr th:each="mbtiList: ${MbtiList}">
+                <td th:text="${mbtiList.id}"></td>
+                <td th:text="${mbtiList.mbti}"></td>
+                <td th:text="${mbtiList.info}"></td>
+            </tr>
+        </table>
+        <div>
+            <div style="display: flex">
+                <div id="EI" class="section" style="flex-direction: column; display: flex; margin-right: 20px">
+                    <button class="button" onclick="selectButton(this)">E</button>
+                    <button class="button" onclick="selectButton(this)">I</button>
+                </div>
+                <div id="SN" class="section" style="flex-direction: column; display: flex; margin-right: 20px">
+                    <button class="button" onclick="selectButton(this)">S</button>
+                    <button class="button" onclick="selectButton(this)">N</button>
+                </div>
+                <div id="FT" class="section" style="flex-direction: column; display: flex; margin-right: 20px">
+                    <button class="button" onclick="selectButton(this)">F</button>
+                    <button class="button" onclick="selectButton(this)">T</button>
+                </div>
+                <div id="PJ" class="section" style="flex-direction: column; display: flex; margin-right: 20px">
+                    <button class="button" onclick="selectButton(this)">P</button>
+                    <button class="button" onclick="selectButton(this)">J</button>
+                </div>
+            </div>
+            삭제할 MBTI ID : <input id="deleteId" type="number" name="number" placeholder="Input delete id" required>
+            <span><h2>LOCAL</h2></span>
+            <button type="button" onclick="deleteLocal()" class="btn btn-outline rounded">
+                delete Mbti
+            </button>
+
+            <span><h2>Dev</h2></span>
+            <button type="button" onclick="deleteDev()" class="btn btn-outline rounded">
+                delte Mbti
+            </button>
+
+
+        </div>
+    </div>
+</div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    let ei = '';
+    let sn = '';
+    let ft = '';
+    let pj = '';
+    let mbti = '';
+    const localUrl = 'http://localhost:8080/mbti'
+    const devUrl = "https://port-0-mbtiservice-likelion-20zynm2mljke6g68.sel4.cloudtype.app/mbti"
+    const headers = {
+        'Content-Type': 'application/json', // Example header
+    };
+    function selectButton(button) {
+        const section = button.parentElement;
+        let buttons = section.getElementsByClassName('button');
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove('selected');
+        }
+        button.classList.add('selected');
+        // 각 버튼에 따라 MBTI 문자열 업데이트
+        switch(section.id) {
+            case 'EI':
+                ei = button.innerText;
+                break;
+            case 'SN':
+                sn = button.innerText;
+                break;
+            case 'FT':
+                ft = button.innerText;
+                break;
+            case 'PJ':
+                pj = button.innerText;
+                break;
+            default:
+                break;
+        }
+        mbti = ei + sn + ft + pj
+        console.log('현재 선택된 섹션:', section.id);
+        console.log('현재 선택된 버튼값:', button.innerText);
+        console.log('현재 선택된 mbti String:', mbti);
+        console.log('현재 선택된 mbti String 길이:', mbti.length);
+    }
+    async function deleteLocal() {
+        const id = document.getElementById("deleteId").value;
+        console.log("삭제할 id: " + id);
+        if (id.length !== 0) {
+            axios.delete(localUrl + `/${id}`)
+                .then(res => res.data)
+                .then(function(data) {
+                    console.log(data);
+                    alert(`ID=${id} 삭제되었습니다`);
+                    document.location.reload();
+                }).catch(e => console.error(e));
+        } else {
+            alert("ID를 입력해주세요")
+        }
+    }
+    async function deleteDev() {
+        const id = document.getElementById("deleteId").value;
+        console.log("삭제할 id: " + id);
+        if (id.length !== 0) {
+            axios.delete(devUrl + `/${id}`)
+                .then(res => res.data)
+                .then(function(data) {
+                    console.log(data);
+                    alert(`ID=${id} 삭제되었습니다`);
+                    document.location.reload();
+                }).catch(e => console.error(e));
+        } else {
+            alert("ID를 입력해주세요")
+        }
+    }
+
+</script>
+</body>
+</html>

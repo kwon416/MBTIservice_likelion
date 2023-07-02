@@ -1,5 +1,7 @@
 
 spring:
+
+
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://svc.sel4.cloudtype.app:30105/mbti_service?characterEncoding=UTF-8&serverTimezone=UTC
@@ -21,9 +23,12 @@ spring:
     database-platform: org.hibernate.dialect.MariaDBDialect
 
   mvc:
+    view:
+      prefix: .html
     hiddenmethod:
       filter:
         enabled: true
+    static-path-pattern: /resources/**
 
   devtools:
     restart:

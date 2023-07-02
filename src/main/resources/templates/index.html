@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloudtype - Spring Boot</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.3/dist/full.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2/dist/tailwind.min.css" rel="stylesheet" type="text/css" />
+  <link rel="icon" href="img/favicon.ico">
+  <style>
+    .selected {
+      background-color: #4CAF50;
+    }
+    .section {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .button {
+      border: 2px solid #4CAF50;
+      color: white;
+      padding: 15px 32px;
+      margin-bottom: 2px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+<div class="hero min-h-screen bg-base-200">
+  <div class="hero-content flex-col lg:flex-row-reverse">
+    <a href="/admin "><button class="button">ADMIN</button></a>
+    <img src="img/spring-boot.svg" class="w-36 rounded-lg md:ml-5 lg:ml-5" alt="spring-boot"/>
+    <div>
+      <div style="display: flex">
+        <div id="EI" class="section" style="flex-direction: column; display: flex; margin-right: 20px">
+          <button class="button" onclick="selectButton(this)">E</button>
+          <button class="button" onclick="selectButton(this)">I</button>
+        </div>
+        <div id="SN" class="section" style="flex-direction: column; display: flex; margin-right: 20px">
+          <button class="button" onclick="selectButton(this)">S</button>
+          <button class="button" onclick="selectButton(this)">N</button>
+        </div>
+        <div id="FT" class="section" style="flex-direction: column; display: flex; margin-right: 20px">
+          <button class="button" onclick="selectButton(this)">F</button>
+          <button class="button" onclick="selectButton(this)">T</button>
+        </div>
+        <div id="PJ" class="section" style="flex-direction: column; display: flex; margin-right: 20px">
+          <button class="button" onclick="selectButton(this)">P</button>
+          <button class="button" onclick="selectButton(this)">J</button>
+        </div>
+      </div>
+      <span><h2>LOCAL</h2></span>
+      <button type="button" onclick="getListLocal()" class="btn btn-outline rounded">
+        getList
+      </button>
+      <button type="button" onclick="getMbtiLocal()" class="btn btn-outline rounded">
+        get Random Mbti
+      </button>
+      <button type="button" onclick="postMbtiLocal()" class="btn btn-outline rounded">
+        post Mbti
+      </button>
+      <span><h2>Dev</h2></span>
+      <button type="button" onclick="getListDev()" class="btn btn-outline rounded">
+        getList
+      </button>
+      <button type="button" onclick="getMbtiDev()" class="btn btn-outline rounded">
+        get Random Mbti
+      </button>
+      <button type="button" onclick="postMbtiDev()" class="btn btn-outline rounded">
+        post  Mbti
+      </button>
+
+    </div>
+  </div>
+</div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  let ei = '';
+  let sn = '';
+  let ft = '';
+  let pj = '';
+  let mbti = '';
+  const localUrl = 'http://localhost:8080/mbti'
+  const devUrl = "https://port-0-mbtiservice-likelion-20zynm2mljke6g68.sel4.cloudtype.app/mbti"
+  const headers = {
+    'Content-Type': 'application/json', // Example header
+  };
+  function selectButton(button) {
+    const section = button.parentElement;
+    let buttons = section.getElementsByClassName('button');
+    for (let i = 0; i < buttons.length; i++) {
+      buttons[i].classList.remove('selected');
+    }
+    button.classList.add('selected');
+    // 각 버튼에 따라 MBTI 문자열 업데이트
+    switch(section.id) {
+      case 'EI':
+        ei = button.innerText;
+        break;
+      case 'SN':
+        sn = button.innerText;
+        break;
+      case 'FT':
+        ft = button.innerText;
+        break;
+      case 'PJ':
+        pj = button.innerText;
+        break;
+      default:
+            break;
+    }
+    mbti = ei + sn + ft + pj
+    console.log('현재 선택된 섹션:', section.id);
+    console.log('현재 선택된 버튼값:', button.innerText);
+    console.log('현재 선택된 mbti String:', mbti);
+    console.log('현재 선택된 mbti String 길이:', mbti.length);
+  }
+  async function getListLocal() {
+    axios.get(localUrl)
+            .then(res => res.data)
+            .then(data => console.log(data))
+            .catch(e => console.error(e));
+  }
+  async function getListDev() {
+    axios.get(devUrl)
+            .then(res => res.data)
+            .then(data => console.log(data))
+            .catch(e => console.error(e));
+  }
+  async function getMbtiLocal() {
+    if (mbti.length === 4) {
+      axios.get(localUrl + `/${mbti}`)
+              .then(res => res.data)
+              .then(data => console.log(data))
+              .catch(e => console.error(e));
+    } else {
+      alert("MBTI를 모두 선택해주세요");
+    }
+  }
+  async function getMbtiDev() {
+    if (mbti.length === 4) {
+      axios.get(devUrl + `/${mbti}`)
+              .then(res => res.data)
+              .then(data => console.log(data))
+              .catch(e => console.error(e));
+    } else {
+      alert("MBTI를 모두 선택해주세요");
+    }
+  }
+  async function postMbtiLocal() {
+    if (mbti.length === 4) {
+      axios.post(localUrl, {'mbti': mbti, 'info': 'Local post sample info'}, {headers})
+              .then(res => res.data)
+              .then(data => console.log(data))
+              .catch(e => console.error(e));
+    } else {
+      alert("MBTI를 모두 선택해주세요");
+    }
+  }
+  async function postMbtiDev() {
+    if (mbti.length === 4) {
+      axios.post(devUrl, {'mbti': mbti, 'info': 'Dev post sample info'}, {headers})
+              .then(res => res.data)
+              .then(data => console.log(data))
+              .catch(e => console.error(e));
+    } else {
+      alert("MBTI를 모두 선택해주세요");
+    }
+  }
+
+
+</script>
+</body>
+</html>
