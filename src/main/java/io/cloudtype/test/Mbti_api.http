@@ -1,0 +1,21 @@
+### 1. 저장된 모든 MBTI 특징조회
+GET {{host}}/mbti
+
+### 2. 특정 MBTI 랜덤 특징 조회
+GET {{host}}/mbti/ESTJ
+Accept: application/json
+
+
+### 3. 나의 MBTI 특징 공유
+POST {{host}}/mbti
+Content-Type: application/json
+
+{
+   "mbti": "ESTJ",
+   "info": "estj info 1"
+}
+
+### 4. 특징삭제
+DELETE {{host}}/mbti/6
+Content-Type: application/json
+

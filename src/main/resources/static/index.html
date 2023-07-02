@@ -8,25 +8,93 @@
   <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.3/dist/full.css" rel="stylesheet" type="text/css" />
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2/dist/tailwind.min.css" rel="stylesheet" type="text/css" />
   <link rel="icon" href="img/favicon.ico">
+  <style>
+    .selected {
+      background-color: #4CAF50;
+    }
+    .section {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .button {
+      border: 2px solid #4CAF50;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      border-radius: 12px;
+    }
+  </style>
 </head>
 <body>
 <div class="hero min-h-screen bg-base-200">
   <div class="hero-content flex-col lg:flex-row-reverse">
     <img src="img/spring-boot.svg" class="w-36 rounded-lg md:ml-5 lg:ml-5"  alt="spring-boot"/>
     <div>
-      <h1 class="text-5xl font-bold">Spring Boot</h1>
-      <p class="py-6">클라우드타입에서 배포한 Spring Boot 어플리케이션입니다.</p>
-      <button type="button" onclick="window.open('https://github.com/cloudtype-examples/java-springboot')" class="btn btn-outline rounded">
-        GitHub
+      <div class="section" style="display: flex">
+        <div class="section" style="flex-direction: column; display: flex; margin-right: 20px">
+          <button class="button" onclick="selectButton(this)">E</button>
+          <button class="button" onclick="selectButton(this)">I</button>
+        </div>
+        <div class="section" style="flex-direction: column; display: flex; margin-right: 20px">
+          <button class="button" onclick="selectButton(this)">S</button>
+          <button class="button" onclick="selectButton(this)">N</button>
+        </div>
+        <div class="section" style="flex-direction: column; display: flex; margin-right: 20px">
+          <button class="button" onclick="selectButton(this)">F</button>
+          <button class="button" onclick="selectButton(this)">T</button>
+        </div>
+        <div class="section" style="flex-direction: column; display: flex; margin-right: 20px">
+          <button class="button" onclick="selectButton(this)">P</button>
+          <button class="button" onclick="selectButton(this)">J</button>
+        </div>
+      </div>
+
+      <span><h2>LOCAL</h2></span>
+      <button type="button" onclick="getListLocal()" class="btn btn-outline rounded">
+        getList
       </button>
-      <button type="button" onclick="window.open('https://docs.cloudtype.io/')" class="btn btn-outline rounded">
-        Docs
+      <button type="button" onclick="" class="btn btn-outline rounded">
+        getMbti
       </button>
-      <button type="button" onclick="window.open('https://discord.gg/U7HX4BA6hu')" class="btn btn-outline rounded">
-        Discord
+      <span><h2>Dev</h2></span>
+      <button type="button" onclick="getListDev()" class="btn btn-outline rounded">
+        getList
       </button>
+      <button type="button" onclick="" class="btn btn-outline rounded">
+        getMbti
+      </button>
+
     </div>
   </div>
 </div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  const url = "https://port-0-mbtiservice-likelion-20zynm2mljke6g68.sel4.cloudtype.app/mbti"
+  function selectButton(button) {
+    var section = button.parentElement;
+    var buttons = section.getElementsByClassName('button');
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].classList.remove('selected');
+    }
+    button.classList.add('selected');
+  }
+  async function getListLocal() {
+    axios.get('http://localhost:8080/mbti')
+            .then(res => res.data)
+            .then(data => console.log(data))
+            .catch(e => console.error(e));
+  }
+  async function getListDev() {
+    axios.get(url)
+            .then(res => res.data)
+            .then(data => console.log(data))
+            .catch(e => console.error(e));
+  }
+
+</script>
 </body>
 </html>
