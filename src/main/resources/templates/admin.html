@@ -37,7 +37,7 @@
     </style>
 </head>
 <body>
-<div style="text-align: center"><h1>ADMIN PAGE</h1></div>
+<div style="text-align: center"><h1><a href="/">back to home</a></h1><h1>ADMIN PAGE</h1></div>
 <div class="hero min-h-screen bg-base-200">
     <div class="hero-content flex-col lg:flex-row-reverse">
         <table class="table">
@@ -53,6 +53,7 @@
             </tr>
         </table>
         <div>
+            <textarea id="info" name="info" cols="40" rows="5" placeholder="특징을 입력해주세요"></textarea> <br>
             <div style="display: flex">
                 <div id="EI" class="section" style="flex-direction: column; display: flex; margin-right: 20px">
                     <button class="button" onclick="selectButton(this)">E</button>
@@ -76,10 +77,16 @@
             <button type="button" onclick="deleteLocal()" class="btn btn-outline rounded">
                 delete Mbti
             </button>
+            <button type="button" onclick="saveInfoLocal()" class="btn btn-outline rounded">
+                save Mbti
+            </button>
 
             <span><h2>Dev</h2></span>
             <button type="button" onclick="deleteDev()" class="btn btn-outline rounded">
-                delte Mbti
+                delete Mbti
+            </button>
+            <button type="button" onclick="saveInfoDev()" class="btn btn-outline rounded">
+                save Mbti
             </button>
 
 
@@ -128,6 +135,44 @@
         console.log('현재 선택된 mbti String:', mbti);
         console.log('현재 선택된 mbti String 길이:', mbti.length);
     }
+
+    async function saveInfoLocal() {
+        const info = document.getElementById("info").value;
+        console.log("입력 텍스트: " + info);
+        if (info.length === 0){
+            alert("MBTI 특징을 입력해주세요");
+        } else if (mbti.length < 4) {
+            alert("MBTI를 선택해주세요");
+        } else {
+            axios.post(localUrl, {'mbti': mbti, 'info': info}, {headers})
+                .then(res => res.data)
+                .then(function(data) {
+                    console.log(data);
+                    alert(`저장되었습니다.`);
+                    document.location.reload();
+                })
+                .catch(e => console.error(e));
+        }
+    }
+    async function saveInfoDev() {
+        const info = document.getElementById("info").value;
+        console.log("입력 텍스트: " + info);
+        if (info.length === 0){
+            alert("MBTI 특징을 입력해주세요");
+        } else if (mbti.length < 4) {
+            alert("MBTI를 선택해주세요");
+        } else {
+            axios.post(devUrl, {'mbti': mbti, 'info': info}, {headers})
+                .then(res => res.data)
+                .then(function(data) {
+                    console.log(data);
+                    alert(`저장되었습니다.`);
+                    document.location.reload();
+                })
+                .catch(e => console.error(e));
+        }
+    }
+
     async function deleteLocal() {
         const id = document.getElementById("deleteId").value;
         console.log("삭제할 id: " + id);

@@ -1,5 +1,6 @@
 package io.cloudtype.Demo.controller;
 
+import io.cloudtype.Demo.dto.BaseApiDto;
 import io.cloudtype.Demo.entity.MbtiVo;
 import io.cloudtype.Demo.service.MbtiService;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +20,15 @@ import java.util.logging.Logger;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/mbti")
-public class MbtiController {
+public class MbtiController extends BaseAdminController<BaseApiDto<?>> {
     private final MbtiService mbtiService;
 
     //저장된 모든 MBTI 특징조회
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<List<MbtiVo>> findAll(Model model) {
+    public ResponseEntity<BaseApiDto<?>> findAll(Model model) {
         List<MbtiVo> mbtiVos = mbtiService.findAll();
-        return new ResponseEntity<List<MbtiVo>>(mbtiVos, HttpStatus.OK);
+//        return new ResponseEntity<List<MbtiVo>>(mbtiVos, HttpStatus.OK);
+        return super.ok(new BaseApiDto<>(mbtiVos));
     }
 
     //특정 MBTI 랜덤 특징 조회
@@ -36,7 +38,6 @@ public class MbtiController {
         if (mbtiVo.isPresent()) {
             return new ResponseEntity(mbtiVo.get(), HttpStatus.OK);
         } else {
-
             return new ResponseEntity("No Such Value : "+ mbti,HttpStatus.OK);
         }
 

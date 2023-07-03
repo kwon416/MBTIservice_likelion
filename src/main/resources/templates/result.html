@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -28,62 +28,116 @@
       font-size: 16px;
       border-radius: 12px;
     }
+    .card {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      width: 400px;
+      height: 200px;
+      background: #fff480;
+      color: black;
+      position: relative;
+      border-radius: 2.5em;
+      padding: 2em;
+      transition: transform 0.4s ease;
+    }
+
+    .card .card-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 5em;
+      height: 100%;
+      transition: transform 0.4s ease;
+    }
+
+    .card .card-top, .card .card-bottom {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .card .card-top p, .card .card-top .card-title, .card .card-bottom p, .card .card-bottom .card-title {
+      margin: 0;
+    }
+
+    .card .card-title {
+      font-weight: bold;
+    }
+
+    .card .card-top p, .card .card-bottom p {
+      font-weight: 600;
+    }
+
+    .card .card-bottom {
+      align-items: flex-end;
+    }
+
+    .card .card-image {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+    }
+
+    .card .card-image svg {
+      width: 4em;
+      height: 4em;
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover {
+      cursor: pointer;
+      transform: scale(0.97);
+    }
+
+    .card:hover .card-content {
+      transform: scale(0.96);
+    }
+
+    .card:hover .card-image svg {
+      transform: scale(1.05);
+    }
+
+    .card:active {
+      transform: scale(0.9);
+    }
   </style>
 </head>
 <body>
-<div style="text-align: center"><h1>MBTI</h1></div>
+<div style="text-align: center"><h1>Result</h1></div>
 <div class="hero min-h-screen bg-base-200">
   <div class="hero-content flex-col lg:flex-row-reverse">
-    <a href="/admin "><button class="button">ADMIN</button></a>
-    <img src="img/spring-boot.svg" class="w-36 rounded-lg md:ml-5 lg:ml-5" alt="spring-boot"/>
-    <div>
-      <div style="display: flex">
-        <div id="EI" class="section" style="flex-direction: column; display: flex; margin-right: 20px">
-          <button class="button" onclick="selectButton(this)">E</button>
-          <button class="button" onclick="selectButton(this)">I</button>
+    <div style="text-align: center">
+      <h1><span th:text="${mbti.getMbti()}">MBTI</span><span>의 특징은?</span></h1>
+      <div class="card">
+        <div class="card-content">
+<!--          <div class="card-top">-->
+<!--            <span class="card-title">01.</span>-->
+<!--            <p>Lightning.</p>-->
+<!--          </div>-->
+<!--          <div class="card-bottom">-->
+<!--            <p>Hover Me?</p>-->
+<!--            <svg width="32" viewBox="0 -960 960 960" height="32" xmlns="http://www.w3.org/2000/svg"><path d="M226-160q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19ZM226-414q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19ZM226-668q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Z"></path></svg>-->
+<!--          </div>-->
         </div>
-        <div id="SN" class="section" style="flex-direction: column; display: flex; margin-right: 20px">
-          <button class="button" onclick="selectButton(this)">S</button>
-          <button class="button" onclick="selectButton(this)">N</button>
-        </div>
-        <div id="FT" class="section" style="flex-direction: column; display: flex; margin-right: 20px">
-          <button class="button" onclick="selectButton(this)">F</button>
-          <button class="button" onclick="selectButton(this)">T</button>
-        </div>
-        <div id="PJ" class="section" style="flex-direction: column; display: flex; margin-right: 20px">
-          <button class="button" onclick="selectButton(this)">P</button>
-          <button class="button" onclick="selectButton(this)">J</button>
+        <div class="card-image">
+          <p class="card-description" th:text="${mbti.getInfo()}">placeholder</p>
         </div>
       </div>
-      <span><h2>LOCAL</h2></span>
-      <button type="button" onclick="getListLocal()" class="btn btn-outline rounded">
-        getList
-      </button>
-      <button type="button" onclick="getMbtiLocal()" class="btn btn-outline rounded">
-        get Random
-      </button>
-      <button type="button" onclick="getResultLocal()" class="btn btn-outline rounded">
-        특징 확인하기
-      </button>
 
-      <span><h2>Dev</h2></span>
-      <button type="button" onclick="getListDev()" class="btn btn-outline rounded">
-        getList
-      </button>
-      <button type="button" onclick="getMbtiLocal()" class="btn btn-outline rounded">
-        get Random
-      </button>
-      <button type="button" onclick="getResultDev()" class="btn btn-outline rounded">
-        특징 확인하기
-      </button>
-
+      <div style="display: inline-flex; align-content: space-between">
+        <a href="/admin "><button class="button">ADMIN</button></a>
+        <a href="/"><button class="button">HOME</button></a>
+      </div>
 
     </div>
   </div>
 </div>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-  console.log(axios);
   let ei = '';
   let sn = '';
   let ft = '';
@@ -116,7 +170,7 @@
         pj = button.innerText;
         break;
       default:
-            break;
+        break;
     }
     mbti = ei + sn + ft + pj
     console.log('현재 선택된 섹션:', section.id);
@@ -152,21 +206,6 @@
               .then(res => res.data)
               .then(data => console.log(data))
               .catch(e => console.error(e));
-    } else {
-      alert("MBTI를 선택해주세요");
-    }
-  }
-
-  async function getResultLocal() {
-    if (mbti.length === 4) {
-      location.href = `http://localhost:8080/result/${mbti}`;
-    } else {
-      alert("MBTI를 선택해주세요");
-    }
-  }
-  async function getResultDev() {
-    if (mbti.length === 4) {
-      location.href = `https://port-0-mbtiservice-likelion-20zynm2mljke6g68.sel4.cloudtype.app/result/${mbti}`;
     } else {
       alert("MBTI를 선택해주세요");
     }
