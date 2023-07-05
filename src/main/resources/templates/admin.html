@@ -37,7 +37,7 @@
     </style>
 </head>
 <body>
-<div style="text-align: center"><h1><a href="/">back to home</a></h1><h1>ADMIN PAGE</h1></div>
+<div style="text-align: center"><h2><a href="/">back to home</a></h2><h1>ADMIN PAGE</h1></div>
 <div class="hero min-h-screen bg-base-200">
     <div class="hero-content flex-col lg:flex-row-reverse">
         <table class="table">
@@ -52,7 +52,7 @@
                 <td th:text="${mbtiList.info}"></td>
             </tr>
         </table>
-        <div>
+        <div style="align-content: start">
             <textarea id="info" name="info" cols="40" rows="5" placeholder="특징을 입력해주세요"></textarea> <br>
             <div style="display: flex">
                 <div id="EI" class="section" style="flex-direction: column; display: flex; margin-right: 20px">
@@ -73,15 +73,15 @@
                 </div>
             </div>
             삭제할 MBTI ID : <input id="deleteId" type="number" name="number" placeholder="Input delete id" required>
-            <span><h2>LOCAL</h2></span>
-            <button type="button" onclick="deleteLocal()" class="btn btn-outline rounded">
-                delete Mbti
-            </button>
-            <button type="button" onclick="saveInfoLocal()" class="btn btn-outline rounded">
-                save Mbti
-            </button>
+<!--            <span><h2>LOCAL</h2></span>-->
+<!--            <button type="button" onclick="deleteLocal()" class="btn btn-outline rounded">-->
+<!--                delete Mbti-->
+<!--            </button>-->
+<!--            <button type="button" onclick="saveInfoLocal()" class="btn btn-outline rounded">-->
+<!--                save Mbti-->
+<!--            </button>-->
 
-            <span><h2>Dev</h2></span>
+<!--            <span><h2>Dev</h2></span>-->
             <button type="button" onclick="deleteDev()" class="btn btn-outline rounded">
                 delete Mbti
             </button>
